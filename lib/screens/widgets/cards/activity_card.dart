@@ -4,7 +4,19 @@ class ActivityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+      margin: EdgeInsets.symmetric(vertical: 4.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x338A959E),
+            offset: Offset(0, 5),
+            blurRadius: 10,
+          ),
+        ],
+      ),
       child: Row(
         children: [
           SizedBox(
@@ -39,7 +51,7 @@ class ActivityCard extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 8.0),
               Text("12 August - 2:23 PM"),
             ],
           )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
 import 'package:sensor_app/providers/sensors.dart';
+import 'package:sensor_app/screens/sensor/sensor_add_screen.dart';
 import 'package:sensor_app/screens/sensor/widgets/sensor_list.dart';
 
 class SensorScreen extends StatefulWidget {
@@ -69,7 +70,9 @@ class _SensorScreenState extends State<SensorScreen> {
             ),
             Container(
               child: Expanded(
-                child: SensorList(),
+                child: _isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : SensorList(),
               ),
             ),
           ],
@@ -80,7 +83,7 @@ class _SensorScreenState extends State<SensorScreen> {
         child: Icon(Icons.add),
         backgroundColor: kPrimaryColor,
         onPressed: () {
-          // Navigator.pushNamed(context, SenderAddScreen.routeName);
+          Navigator.pushNamed(context, SensorAddScreen.routeName);
         },
       ),
     );

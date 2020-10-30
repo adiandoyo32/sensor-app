@@ -4,6 +4,7 @@ import 'package:sensor_app/screens/sender/sender_add_screen.dart';
 import 'package:sensor_app/screens/sender/sender_detail_location.dart';
 import 'package:sensor_app/screens/sender/sender_detail_screen.dart';
 import 'package:sensor_app/screens/sender/widgets/sender_pick_location.dart';
+import 'package:sensor_app/screens/sensor/sensor_add_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   var builder;
@@ -24,6 +25,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case SenderDetailLocation.routeName:
       var coord = settings.arguments;
       builder = (_) => SenderDetailLocation(coord);
+      break;
+    case SensorAddScreen.routeName:
+      builder = (_) => SensorAddScreen();
       break;
     default:
       builder = (_) => BaseScreen();

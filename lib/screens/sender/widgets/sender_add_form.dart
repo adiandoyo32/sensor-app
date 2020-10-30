@@ -5,6 +5,7 @@ import 'package:sensor_app/providers/senders.dart';
 import 'package:sensor_app/screens/sender/widgets/sender_pick_location.dart';
 import 'package:sensor_app/screens/widgets/buttons/primary_button.dart';
 import 'package:sensor_app/utils/mixins/form_validation.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 
 class SenderAddForm extends StatefulWidget {
   @override
@@ -15,6 +16,8 @@ class _SenderAddFormState extends State<SenderAddForm> with Validation {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameFieldController = TextEditingController();
   final _locationFieldController = TextEditingController();
+
+  String text;
 
   Future<void> _selectOnMap() async {
     final selectedLocation = await Navigator.of(context).push<LatLng>(
@@ -89,6 +92,14 @@ class _SenderAddFormState extends State<SenderAddForm> with Validation {
                 validator: validateLocation,
               ),
               SizedBox(height: 40),
+              RaisedButton(
+                child: Text('Scan'),
+                onPressed: () async {
+                  text = await scanner.scan();
+                  setState(() {});
+                  print(text);
+                },
+              ),
               PrimaryButton(
                 text: "Submit",
                 onPress: _submitForm,
