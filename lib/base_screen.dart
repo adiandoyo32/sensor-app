@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sensor_app/constants/colors.dart';
 import 'package:sensor_app/screens/home/home_screen.dart';
-import 'package:sensor_app/screens/sender/sender_screen.dart';
-import 'package:sensor_app/screens/sensor/sensor_screen.dart';
+import 'package:sensor_app/screens/device/device_screen.dart';
+import 'package:sensor_app/screens/profile/profile_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   static const String routeName = "base_screen";
@@ -12,11 +12,7 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreen extends State<BaseScreen> {
   int _selectedIndex = 0;
-  final List<Widget> _screen = [
-    HomeScreen(),
-    SenderScreen(),
-    SensorScreen(),
-  ];
+  final List<Widget> _screen = [HomeScreen(), DeviceScreen(), ProfileScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +35,12 @@ class _BaseScreen extends State<BaseScreen> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.cast),
-            title: Text('Sender'),
+            icon: Icon(Icons.rss_feed),
+            title: Text('Device'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.rss_feed),
-            title: Text('Sensor'),
+            icon: Icon(Icons.person),
+            title: Text('Profile'),
           ),
         ],
       ),

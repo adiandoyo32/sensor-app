@@ -40,11 +40,14 @@ class SenderDetailScreen extends StatelessWidget {
                 title: 'Location',
                 icon: Icons.chevron_right,
                 onTap: () {
-                  Navigator.pushNamed(context, SenderDetailLocation.routeName,
-                      arguments: Coordinat(
-                        lat: sender.coord.lat,
-                        lon: sender.coord.lon,
-                      ));
+                  Navigator.pushNamed(
+                    context,
+                    SenderDetailLocation.routeName,
+                    arguments: Coordinat(
+                      lat: sender.coord.lat,
+                      lon: sender.coord.lon,
+                    ),
+                  );
                 },
               )
             ],

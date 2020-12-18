@@ -1,29 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
-import 'package:sensor_app/providers/sensors.dart';
-import 'package:sensor_app/screens/sensor/sensor_add_screen.dart';
-import 'package:sensor_app/screens/sensor/widgets/sensor_list.dart';
-import 'package:sensor_app/services/sensor_service.dart';
+import 'package:sensor_app/providers/devices.dart';
+import 'package:sensor_app/screens/sender/sender_add_screen.dart';
+import 'package:sensor_app/screens/sender/widgets/sender_list.dart';
 
-class SensorScreen extends StatefulWidget {
+class DeviceScreen extends StatefulWidget {
+  static const String routeName = "device_screen";
   @override
-  _SensorScreenState createState() => _SensorScreenState();
+  _DeviceScreenState createState() => _DeviceScreenState();
 }
 
-class _SensorScreenState extends State<SensorScreen> {
+class _DeviceScreenState extends State<DeviceScreen> {
   bool _isInit = true;
   bool _isLoading = false;
-
-  // final _fireStore = FirebaseFirestore.instance;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isInit) {
       _isLoading = true;
-      Provider.of<Sensors>(context).fetchSensors().then((_) {
+      Provider.of<Devices>(context).fetchDevices().then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -32,36 +29,16 @@ class _SensorScreenState extends State<SensorScreen> {
     _isInit = false;
   }
 
-  Future<void> _refreshSensors(BuildContext context) async {
-    await Provider.of<Sensors>(context, listen: false).fetchSensors();
+  Future<void> _refreshDevices(BuildContext context) async {
+    await Provider.of<Devices>(context, listen: false).fetchDevices();
   }
-
-  // Stream<dynamic> getSensors() async {
-  // final sensors = await _fireStore.collection('sensors').get();
-  // for (var sensor in sensors.docs) {
-  //   print(sensor.data);
-  // }
-
-  //   final sensors = SensorService().getFireSensor();
-  //   return sensors;
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      // body: StreamBuilder(
-      //   stream: getSensors,
-      //   builder: (context, snapshot) {
-      //     if (snapshot.hasError) {
-      //       return Center(child: Text('error'));
-      //     } else if (snapshot.hasData) {
-      //       return Center(child: Text('has data'));
-      //     }
-      //   },
-      // ),
       body: RefreshIndicator(
-        onRefresh: () => _refreshSensors(context),
+        onRefresh: () => _refreshDevices(context),
         child: Column(
           children: [
             Padding(
@@ -69,20 +46,20 @@ class _SensorScreenState extends State<SensorScreen> {
                   EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 10),
               child: Row(
                 children: [
-                  Consumer<Sensors>(
-                    builder: (context, sensors, _) => RichText(
+                  Consumer<Devices>(
+                    builder: (context, devices, _) => RichText(
                       text: TextSpan(
                         style: TextStyle(color: Colors.black),
                         children: [
                           TextSpan(
-                            text: "${sensors.sensorCount}  ",
+                            text: '${devices.deviceCount} ',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextSpan(
-                            text: "sensors",
+                            text: 'devices',
                             style: TextStyle(fontSize: 14),
                           ),
                         ],
@@ -94,9 +71,24 @@ class _SensorScreenState extends State<SensorScreen> {
             ),
             Container(
               child: Expanded(
+                // child: Consumer<Senders>(
+                //   builder: (_, sender, __) {
+                //     if (sender.state == SenderState.initial) {
+                //       return Text('Initial');
+                //     } else if (sender.state == SenderState.loading) {
+                //       return Center(child: CircularProgressIndicator());
+                //     } else {
+                //       if (sender.failure != null) {
+                //         return Text(sender.failure.toString());
+                //       } else {
+                //         return SenderList();
+                //       }
+                //     }
+                //   },
+                // ),child: Expanded(
                 child: _isLoading
                     ? Center(child: CircularProgressIndicator())
-                    : SensorList(),
+                    : SenderList(),
               ),
             ),
           ],
@@ -107,7 +99,7 @@ class _SensorScreenState extends State<SensorScreen> {
         child: Icon(Icons.add),
         backgroundColor: kPrimaryColor,
         onPressed: () {
-          Navigator.pushNamed(context, SensorAddScreen.routeName);
+          Navigator.pushNamed(context, SenderAddScreen.routeName);
         },
       ),
     );
@@ -124,7 +116,7 @@ class _SensorScreenState extends State<SensorScreen> {
           children: [
             TextSpan(text: "My "),
             TextSpan(
-              text: "Sensor",
+              text: "Device",
               style: TextStyle(
                 color: kPrimaryColor,
               ),

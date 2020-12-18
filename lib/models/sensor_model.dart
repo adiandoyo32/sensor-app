@@ -1,19 +1,19 @@
 import 'package:flutter/foundation.dart';
 
 class Sensor with ChangeNotifier {
-  final int id, sensorId;
+  final int id, senderId;
   final String name;
 
-  Sensor({this.id, this.sensorId, this.name});
+  Sensor({this.id, this.senderId, this.name});
 
   factory Sensor.fromJson(Map<String, dynamic> json) {
     return Sensor(
       id: json['id'],
       name: json['name'],
-      sensorId: json['sensor_id'],
+      senderId: json['sender_id'],
     );
   }
 
   @override
-  String toString() => 'Sensor { id: $id, name: $name, status: $sensorId }';
+  String toString() => 'Sensor { id: $id, name: $name, senderId: $senderId }';
 }

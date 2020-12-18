@@ -2,28 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:sensor_app/models/sender_model.dart';
 import 'package:sensor_app/services/sender_service.dart';
 
-enum SenderState { initial, loading, loaded }
-
 class Senders with ChangeNotifier {
   SenderService senderService = SenderService();
-
-  // Sender State
-  // SenderState _state = SenderState.initial;
-  // SenderState get state => _state;
-
-  // void _setState(SenderState state) {
-  //   _state = state;
-  //   notifyListeners();
-  // }
-
-  // //Error Handle
-  // Failure _failure;
-  // Failure get failure => _failure;
-
-  // void _setFailure(Failure failure) {
-  //   _failure = failure;
-  //   notifyListeners();
-  // }
 
   List<Sender> _senders = [];
 
@@ -45,7 +25,6 @@ class Senders with ChangeNotifier {
   }
 
   Future<void> fetchSenders() async {
-    // _setState(SenderState.loading);
     try {
       List<Sender> fetchedSenders = await senderService.getSenders();
       _senders = fetchedSenders;
@@ -54,7 +33,6 @@ class Senders with ChangeNotifier {
       // _setFailure(error);
       throw Exception(error.toString());
     }
-    // _setState(SenderState.loaded);
   }
 
   Future<bool> createSender(String name, String location) async {

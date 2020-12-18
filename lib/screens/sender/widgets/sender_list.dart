@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sensor_app/providers/senders.dart';
+import 'package:sensor_app/providers/devices.dart';
 import 'package:sensor_app/screens/widgets/listtile/reuseable_list_tile.dart';
 
 class SenderList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final sendersData = Provider.of<Senders>(context);
-    final senders = sendersData.senders;
+    final devicesData = Provider.of<Devices>(context);
+    final devices = devicesData.devices;
     return ListView.separated(
       separatorBuilder: (context, index) => Divider(
         height: 0,
@@ -15,9 +15,9 @@ class SenderList extends StatelessWidget {
         endIndent: 16.0,
         color: Color(0x40121212),
       ),
-      itemCount: senders.length,
+      itemCount: devices.length,
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
-        value: senders[index],
+        value: devices[index],
         child: ReusableListTile(),
       ),
     );

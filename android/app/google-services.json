@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "722550683654",
+    "firebase_url": "https://add-blank.firebaseio.com",
+    "project_id": "add-blank",
+    "storage_bucket": "add-blank.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722550683654:android:bb0d062928e3ef9a43eb87",
+        "android_client_info": {
+          "package_name": "com.example.sensor_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722550683654-smc2jlve4hkipgsrmh7mik4jhtvsoecp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPG3yhL_wMJBDXO36ozFPLenAeopLxjxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "722550683654-smc2jlve4hkipgsrmh7mik4jhtvsoecp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

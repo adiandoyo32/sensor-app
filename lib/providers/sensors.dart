@@ -23,16 +23,13 @@ class Sensors with ChangeNotifier {
   }
 
   Future<void> fetchSensors() async {
-    // _setState(SenderState.loading);
     try {
       List<Sensor> fetchedSensors = await sensorService.getSensors();
       _sensors = fetchedSensors;
       notifyListeners();
     } catch (error) {
-      // _setFailure(error);
       throw Exception(error.toString());
     }
-    // _setState(SenderState.loaded);
   }
 
   void deleteSensor(int id) {

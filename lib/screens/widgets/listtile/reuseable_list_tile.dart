@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
-import 'package:sensor_app/models/sender_model.dart';
-import 'package:sensor_app/providers/senders.dart';
+import 'package:sensor_app/models/device_model.dart';
+import 'package:sensor_app/providers/devices.dart';
 import 'package:sensor_app/screens/sender/sender_detail_screen.dart';
 
 class ReusableListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final sender = Provider.of<Sender>(context, listen: false);
+    final device = Provider.of<Device>(context, listen: false);
     return Dismissible(
-      key: ValueKey(sender.id),
+      key: ValueKey(device.id),
       confirmDismiss: (direction) {
         return showDialog(
           context: context,
@@ -30,7 +30,7 @@ class ReusableListTile extends StatelessWidget {
       },
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        Provider.of<Senders>(context, listen: false).deleteSender(sender.id);
+        Provider.of<Devices>(context, listen: false).deleteDevice(device.id);
       },
       background: Container(
         color: Theme.of(context).errorColor,
@@ -65,20 +65,20 @@ class ReusableListTile extends StatelessWidget {
           ),
         ),
         title: Text(
-          '${sender.name}',
+          '${device.deviceId}',
           style: TextStyle(
             fontSize: 18.0,
             fontWeight: FontWeight.w600,
           ),
         ),
         subtitle: Text(
-          '${sender.senderStatus}',
+          '${device.deviceStatus}',
           style: TextStyle(color: kPrimaryColor),
         ),
         onTap: () {
           Navigator.of(context).pushNamed(
             SenderDetailScreen.routeName,
-            arguments: sender.id,
+            arguments: device.id,
           );
         },
       ),
