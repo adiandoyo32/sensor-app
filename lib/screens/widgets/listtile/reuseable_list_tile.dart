@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
 import 'package:sensor_app/models/device_model.dart';
 import 'package:sensor_app/providers/devices.dart';
-import 'package:sensor_app/screens/sender/sender_detail_screen.dart';
+import 'package:sensor_app/screens/device/device_detail/device_detail_screen.dart';
 
 class ReusableListTile extends StatelessWidget {
   @override
@@ -15,14 +15,16 @@ class ReusableListTile extends StatelessWidget {
         return showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Are you sure?'),
-            content: Text('Do you want to remove this sender?'),
+            title: Text('Delete Confirmation'),
+            content: Text('Do you want to remove this device?'),
             actions: [
               FlatButton(
                   onPressed: () => Navigator.of(context).pop(false),
                   child: Text('Cancel')),
               FlatButton(
-                  onPressed: () => Navigator.of(context).pop(true),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
                   child: Text('Remove')),
             ],
           ),
@@ -77,7 +79,7 @@ class ReusableListTile extends StatelessWidget {
         ),
         onTap: () {
           Navigator.of(context).pushNamed(
-            SenderDetailScreen.routeName,
+            DeviceDetailScreen.routeName,
             arguments: device.id,
           );
         },

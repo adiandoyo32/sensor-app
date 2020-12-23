@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 class Device with ChangeNotifier {
-  final int id, lat, long, isActive;
+  final int id, isActive;
+  final double lat, long;
   final String deviceId, senderId, sensorId;
   final DeviceType deviceType;
 
@@ -34,7 +35,7 @@ class Device with ChangeNotifier {
 
   @override
   String toString() =>
-      'Device { id: $id, device: $deviceId, status: $isActive, type: $deviceType }';
+      'Device { id: $id, device: $deviceId, status: $isActive, lat: $lat, long: $long type: $deviceType }';
 }
 
 class DeviceType {

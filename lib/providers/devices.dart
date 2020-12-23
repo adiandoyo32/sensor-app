@@ -35,26 +35,8 @@ class Devices with ChangeNotifier {
     }
   }
 
-  // Future<bool> createSender(String name, String location) async {
-  //   int newId = findLastId() + 1;
-  //   List locationList = location.split(' ');
-  //   final coordinat = Coordinat(
-  //     lat: double.parse(locationList[0]),
-  //     lon: double.parse(locationList[1]),
-  //   );
-  //   final newSender = Sender(
-  //     id: newId,
-  //     name: name,
-  //     status: 0,
-  //     coord: coordinat,
-  //     lastActive: DateTime.now(),
-  //   );
-  //   _senders.add(newSender);
-  //   notifyListeners();
-  //   return true;
-  // }
-
-  void deleteDevice(int id) {
+  Future<void> deleteDevice(int id) async {
+    await deviceService.disconnectDevice(id);
     _devices.removeWhere((device) => device.id == id);
     notifyListeners();
   }

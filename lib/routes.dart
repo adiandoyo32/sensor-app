@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sensor_app/base_screen.dart';
 import 'package:sensor_app/screens/auth/login_screen.dart';
-import 'package:sensor_app/screens/device/device_detail_screen.dart';
-import 'package:sensor_app/screens/sender/sender_add_screen.dart';
-import 'package:sensor_app/screens/sender/sender_detail_location.dart';
+import 'package:sensor_app/screens/device/device_add.dart';
+import 'package:sensor_app/screens/device/device_detail/device_detail_screen.dart';
+import 'package:sensor_app/screens/device/device_location.dart';
 import 'package:sensor_app/screens/sender/widgets/sender_pick_location.dart';
 import 'package:sensor_app/screens/sensor/sensor_add_screen.dart';
 
@@ -20,15 +20,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       var deviceId = settings.arguments;
       builder = (_) => DeviceDetailScreen(deviceId);
       break;
-    case SenderAddScreen.routeName:
-      builder = (_) => SenderAddScreen();
+    case DeviceLocation.routeName:
+      var coord = settings.arguments;
+      builder = (_) => DeviceLocation(coord);
+      break;
+    case DeviceAdd.routeName:
+      builder = (_) => DeviceAdd();
       break;
     case SenderPickLocation.routeName:
       builder = (_) => SenderPickLocation();
-      break;
-    case SenderDetailLocation.routeName:
-      var coord = settings.arguments;
-      builder = (_) => SenderDetailLocation(coord);
       break;
     case SensorAddScreen.routeName:
       builder = (_) => SensorAddScreen();

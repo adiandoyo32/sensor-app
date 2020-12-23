@@ -16,10 +16,10 @@ class SenderService {
     }
   }
 
-  Future<void> createSender() async {
-    try {
-      ApiService apiService = ApiService('$_BASE_URL/senders');
-      // final response = await apiService.
-    } catch (error) {}
-  }
+  // Future<void> createSender() async {
+  //   try {
+  //     ApiService apiService = ApiService('$_BASE_URL/senders');
+  //     // final response = await apiService.
+  //   } catch (error) {}
+  // }
 }

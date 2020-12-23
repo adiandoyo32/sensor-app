@@ -13,12 +13,13 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),
           child: ListView(
             children: [
+              SizedBox(height: 32),
               Center(
                 child: Container(
                   width: 130,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
+import 'package:sensor_app/models/device_model.dart';
 import 'package:sensor_app/providers/devices.dart';
-import 'package:sensor_app/screens/sender/sender_add_screen.dart';
-import 'package:sensor_app/screens/sender/widgets/sender_list.dart';
+import 'package:sensor_app/screens/device/device_add.dart';
+import 'package:sensor_app/screens/device/device_list.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:sensor_app/services/device_service.dart';
 
 class DeviceScreen extends StatefulWidget {
   static const String routeName = "device_screen";
@@ -14,6 +17,8 @@ class DeviceScreen extends StatefulWidget {
 class _DeviceScreenState extends State<DeviceScreen> {
   bool _isInit = true;
   bool _isLoading = false;
+  String qrResult = '';
+  var response;
 
   @override
   void didChangeDependencies() {
@@ -59,7 +64,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
                             ),
                           ),
                           TextSpan(
-                            text: 'devices',
+                            text:
+                                devices.deviceCount > 1 ? 'devices' : 'device',
                             style: TextStyle(fontSize: 14),
                           ),
                         ],
@@ -71,24 +77,9 @@ class _DeviceScreenState extends State<DeviceScreen> {
             ),
             Container(
               child: Expanded(
-                // child: Consumer<Senders>(
-                //   builder: (_, sender, __) {
-                //     if (sender.state == SenderState.initial) {
-                //       return Text('Initial');
-                //     } else if (sender.state == SenderState.loading) {
-                //       return Center(child: CircularProgressIndicator());
-                //     } else {
-                //       if (sender.failure != null) {
-                //         return Text(sender.failure.toString());
-                //       } else {
-                //         return SenderList();
-                //       }
-                //     }
-                //   },
-                // ),child: Expanded(
                 child: _isLoading
                     ? Center(child: CircularProgressIndicator())
-                    : SenderList(),
+                    : DeviceList(),
               ),
             ),
           ],
@@ -98,9 +89,48 @@ class _DeviceScreenState extends State<DeviceScreen> {
         heroTag: null,
         child: Icon(Icons.add),
         backgroundColor: kPrimaryColor,
-        onPressed: () {
-          Navigator.pushNamed(context, SenderAddScreen.routeName);
+        onPressed: () async {
+          qrResult = await scanner.scan();
+          if (qrResult == null) {
+            return;
+          }
+          response = await DeviceService().connectDevice(qrResult);
+          if (response['code'] == 200) {
+            _refreshDevices(context);
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text('Device added'),
+              duration: Duration(seconds: 3),
+              action: SnackBarAction(
+                label: 'Close',
+                onPressed: () {
+                  Scaffold.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ));
+          } else if (response['code'] == 400) {
+            _showMaterialDialog(response['error']);
+          } else {
+            _showMaterialDialog(response['error']['device_id'][0]);
+          }
         },
+      ),
+    );
+  }
+
+  _showMaterialDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (_) => new AlertDialog(
+        title: new Text("Failed to add device"),
+        content: new Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Close'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
       ),
     );
   }
