@@ -4,8 +4,11 @@ import 'package:sensor_app/constants/colors.dart';
 import 'package:sensor_app/models/device_model.dart';
 import 'package:sensor_app/providers/devices.dart';
 import 'package:sensor_app/screens/device/device_detail/device_detail_screen.dart';
+import 'package:sensor_app/utils/helper/deviceType.dart';
 
 class ReusableListTile extends StatelessWidget {
+  final DeviceTypeModel type = DeviceTypeModel();
+
   @override
   Widget build(BuildContext context) {
     final device = Provider.of<Device>(context, listen: false);
@@ -49,7 +52,7 @@ class ReusableListTile extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        contentPadding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
         leading: Padding(
           padding: const EdgeInsets.all(4.0),
           child: SizedBox(
@@ -58,9 +61,9 @@ class ReusableListTile extends StatelessWidget {
               aspectRatio: 0.4,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
-                child: Image.asset(
-                  "assets/images/image.png",
-                  fit: BoxFit.cover,
+                child: Container(
+                  color: type.getColor(device.deviceType.name),
+                  child: type.getIcon(device.deviceType.name),
                 ),
               ),
             ),
@@ -75,7 +78,10 @@ class ReusableListTile extends StatelessWidget {
         ),
         subtitle: Text(
           '${device.deviceStatus}',
-          style: TextStyle(color: kPrimaryColor),
+          style: TextStyle(
+            color:
+                device.deviceStatus == 'Active' ? kPrimaryColor : kErrorColor,
+          ),
         ),
         onTap: () {
           Navigator.of(context).pushNamed(

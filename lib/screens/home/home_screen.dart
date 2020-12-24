@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
+import 'package:sensor_app/providers/devices.dart';
 import 'package:sensor_app/screens/home/widgets/card_content.dart';
 import 'package:sensor_app/screens/home/widgets/home_card.dart';
 import 'package:sensor_app/screens/widgets/cards/activity_card.dart';
@@ -91,18 +93,22 @@ class HomeScreen extends StatelessWidget {
         Expanded(
           child: HomeCard(
             cardMargin: EdgeInsets.only(right: 8.0),
-            cardChild: CardContent(
-              title: 'Total Senders',
-              labelContent: '4',
+            cardChild: Consumer<Devices>(
+              builder: (context, devices, _) => CardContent(
+                title: 'Total Devices',
+                labelContent: '${devices.deviceCount}',
+              ),
             ),
           ),
         ),
         Expanded(
           child: HomeCard(
             cardMargin: EdgeInsets.only(left: 8.0),
-            cardChild: CardContent(
-              title: 'Active',
-              labelContent: '4',
+            cardChild: Consumer<Devices>(
+              builder: (context, devices, _) => CardContent(
+                title: 'Active Devices',
+                labelContent: '${devices.activeDeviceCount}',
+              ),
             ),
           ),
         ),

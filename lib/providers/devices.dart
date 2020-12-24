@@ -6,6 +6,7 @@ class Devices with ChangeNotifier {
   DeviceService deviceService = DeviceService();
 
   List<Device> _devices = [];
+  String _deviceCurrentLog = "";
 
   List<Device> get devices {
     return [..._devices];
@@ -13,6 +14,19 @@ class Devices with ChangeNotifier {
 
   int get deviceCount {
     return _devices.length;
+  }
+
+  int get activeDeviceCount {
+    return _devices.where((element) => element.isActive == 1).length;
+  }
+
+  void setDeviceCurrentLog(String val) {
+    _deviceCurrentLog = val;
+    notifyListeners();
+  }
+
+  String get deviceCurrentLog {
+    return _deviceCurrentLog;
   }
 
   Device findById(int id) {

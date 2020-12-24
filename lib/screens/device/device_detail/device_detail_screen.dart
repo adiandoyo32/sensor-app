@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
 import 'package:sensor_app/providers/devices.dart';
 import 'package:sensor_app/screens/device/device_detail/device_information.dart';
+import 'package:sensor_app/screens/device/device_detail/device_statistic.dart';
 
 class DeviceDetailScreen extends StatefulWidget {
   static const String routeName = "device_detail_screen";
@@ -22,13 +23,13 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen>
   List<Widget> list = [
     Tab(
       icon: Icon(
-        Icons.info,
+        Icons.timeline,
         color: kPrimaryColor,
       ),
     ),
     Tab(
       icon: Icon(
-        Icons.timeline,
+        Icons.info_outline,
         color: kPrimaryColor,
       ),
     ),
@@ -37,13 +38,13 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen>
   @override
   void initState() {
     super.initState();
+    Provider.of<Devices>(context, listen: false).setDeviceCurrentLog("0.0");
     _controller = TabController(length: list.length, vsync: this);
 
     _controller.addListener(() {
       setState(() {
         _selectedIndex = _controller.index;
       });
-      print("Selected Index: " + _controller.index.toString());
     });
   }
 
@@ -60,6 +61,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen>
         ),
         backgroundColor: Colors.white,
         bottom: TabBar(
+          indicatorColor: kPrimaryColor,
           onTap: (index) {
             // Should not used it as it only called when tab options are clicked,
             // not when user swapped
@@ -69,12 +71,8 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen>
         ),
       ),
       body: TabBarView(controller: _controller, children: [
+        DeviceStatistic(device: device),
         DeviceInformation(device: device),
-        Center(
-            child: Text(
-          _selectedIndex.toString(),
-          style: TextStyle(fontSize: 40),
-        )),
       ]),
       // body: DeviceInformation(device: device),
     );

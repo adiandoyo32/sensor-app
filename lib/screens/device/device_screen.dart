@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
-import 'package:sensor_app/models/device_model.dart';
 import 'package:sensor_app/providers/devices.dart';
-import 'package:sensor_app/screens/device/device_add.dart';
 import 'package:sensor_app/screens/device/device_list.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:sensor_app/services/device_service.dart';

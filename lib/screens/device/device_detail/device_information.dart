@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sensor_app/models/coordinat_model.dart';
 import 'package:sensor_app/models/device_model.dart';
 import 'package:sensor_app/screens/device/device_detail_tile.dart';
@@ -21,6 +22,9 @@ class DeviceInformation extends StatelessWidget {
           tiles: [
             DeviceDetailTile(title: 'Name', subtitle: device.deviceId),
             DeviceDetailTile(title: 'Status', subtitle: device.deviceStatus),
+            DeviceDetailTile(
+                title: 'Device Type',
+                subtitle: toBeginningOfSentenceCase(device.deviceType.name)),
             DeviceDetailTile(
               title: 'Location',
               icon: Icons.chevron_right,
