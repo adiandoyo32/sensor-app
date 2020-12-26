@@ -27,8 +27,8 @@ class Device with ChangeNotifier {
       senderId: json['sender_id'],
       sensorId: json['sensor_id'],
       isActive: json['is_active'],
-      lat: json['lat'],
-      long: json['long'],
+      lat: json['lat'] as double,
+      long: json['long'] as double,
       deviceType: DeviceType.fromJson(json['device_type']),
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter_pusher_client/flutter_pusher.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/models/device_model.dart';
 import 'package:sensor_app/providers/devices.dart';
+import 'package:sensor_app/screens/device/device_detail/widgets/device_chart.dart';
 import 'package:sensor_app/screens/device/device_detail/widgets/value_card.dart';
 
 class DeviceStatistic extends StatefulWidget {
@@ -24,7 +25,7 @@ class _DeviceStatisticState extends State<DeviceStatistic> {
     );
 
     FlutterPusher pusher =
-        FlutterPusher('sensorku', options, enableLogging: true);
+        FlutterPusher('sensorku', options, enableLogging: false);
 
     Echo echo = new Echo({
       'broadcaster': 'pusher',
@@ -34,15 +35,21 @@ class _DeviceStatisticState extends State<DeviceStatistic> {
     echo.channel('log.${widget.device.deviceId}').listen('NewLog', (e) {
       final device = Provider.of<Devices>(context, listen: false);
       device.setDeviceCurrentLog(e['value']);
+      device.addData(e);
     });
 
-    return Container(
-      padding: EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ValueCard(device: widget.device),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ValueCard(device: widget.device),
+            SizedBox(height: 16.0),
+            DeviceChart(),
+            // SimpleLineChart.withSampleData(),
+          ],
+        ),
       ),
     );
   }

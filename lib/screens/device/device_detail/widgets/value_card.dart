@@ -5,10 +5,15 @@ import 'package:sensor_app/models/device_model.dart';
 import 'package:sensor_app/providers/devices.dart';
 import 'package:sensor_app/utils/helper/deviceType.dart';
 
-class ValueCard extends StatelessWidget {
+class ValueCard extends StatefulWidget {
   const ValueCard({Key key, this.device}) : super(key: key);
   final Device device;
 
+  @override
+  _ValueCardState createState() => _ValueCardState();
+}
+
+class _ValueCardState extends State<ValueCard> {
   @override
   Widget build(BuildContext context) {
     DeviceTypeModel type = DeviceTypeModel();
@@ -22,15 +27,15 @@ class ValueCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              type.getIcon(device.deviceType.name),
+              type.getIcon(widget.device.deviceType.name),
               SizedBox(width: 8.0),
               Text(
-                device.deviceType.name == "ph"
+                widget.device.deviceType.name == "ph"
                     ? "pH Device"
-                    : device.deviceType.name == "ldr"
+                    : widget.device.deviceType.name == "ldr"
                         ? "LDR Device"
                         : toBeginningOfSentenceCase(
-                            "${device.deviceType.name} Device"),
+                            "${widget.device.deviceType.name} Device"),
                 style: TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500,
@@ -55,7 +60,7 @@ class ValueCard extends StatelessWidget {
               ),
               SizedBox(width: 4.0),
               Text(
-                type.getSymbol(device.deviceType.name),
+                type.getSymbol(widget.device.deviceType.name),
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w500,

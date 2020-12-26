@@ -19,6 +19,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen>
     with SingleTickerProviderStateMixin {
   TabController _controller;
   int _selectedIndex = 0;
+  bool _isInit = true;
 
   List<Widget> list = [
     Tab(
@@ -38,7 +39,6 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen>
   @override
   void initState() {
     super.initState();
-    Provider.of<Devices>(context, listen: false).setDeviceCurrentLog("0.0");
     _controller = TabController(length: list.length, vsync: this);
 
     _controller.addListener(() {
@@ -46,6 +46,15 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen>
         _selectedIndex = _controller.index;
       });
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isInit) {
+      Provider.of<Devices>(context).resetLog();
+    }
+    _isInit = false;
   }
 
   @override
@@ -74,7 +83,6 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen>
         DeviceStatistic(device: device),
         DeviceInformation(device: device),
       ]),
-      // body: DeviceInformation(device: device),
     );
   }
 }
