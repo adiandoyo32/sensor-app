@@ -36,7 +36,7 @@ dependencies:
   flutter_pusher_client: ^0.3.1
   laravel_echo: ^0.2.5
   charts_flutter: ^0.9.0
-  syncfusion_flutter_charts: ^18.4.31
+  shared_preferences: ^0.5.12+4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

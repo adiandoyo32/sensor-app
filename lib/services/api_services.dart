@@ -47,19 +47,4 @@ class ApiService {
       throw Failure("Bad response format 👎");
     }
   }
-
-  // Future<dynamic> postData(data) async {
-  //   try {
-  //     final http.Response response = await http.post(
-  //       url,
-  //       headers: <String, String>{
-  //         'Content-type': 'application/json; charset=UTF-8',
-  //       },
-  //       body: jsonEncode(data),
-  //     );
-  //     return response;
-  //   } catch (e) {
-  //     throw e.toString();
-  //   }
-  // }
 }

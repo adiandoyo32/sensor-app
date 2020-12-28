@@ -14,7 +14,7 @@ class CardContent extends StatelessWidget {
           title,
           style: TextStyle(fontSize: 14.0),
         ),
-        SizedBox(height: 16.0),
+        SizedBox(height: 12.0),
         Text(
           labelContent,
           style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),

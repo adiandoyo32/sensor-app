@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sensor_app/base_screen.dart';
 import 'package:sensor_app/constants/colors.dart';
 import 'package:sensor_app/screens/widgets/buttons/primary_button.dart';
+import 'package:sensor_app/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -8,10 +11,25 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  bool _isLoading = false;
   bool _isObsecureText = true;
   bool _autovalidate = false;
   TextEditingController _emailController;
   TextEditingController _passwordController;
+  final _formKey = GlobalKey<FormState>();
+
+  _showMsg(String msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some code to undo the change!
+        },
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
 
   @override
   void initState() {
@@ -20,7 +38,6 @@ class _LoginFormState extends State<LoginForm> {
     _passwordController = TextEditingController();
   }
 
-  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -82,24 +99,51 @@ class _LoginFormState extends State<LoginForm> {
             validator: (val) => _validateRequired(val, 'Password'),
           ),
           SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            child: PrimaryButton(
-              onPress: () {
-                if (_formKey.currentState.validate()) {
-                  print("Submit");
-                } else {
-                  setState(() {
-                    _autovalidate = true;
-                  });
-                }
-              },
-              text: "Login",
-            ),
-          )
+          _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : SizedBox(
+                  width: double.infinity,
+                  child: PrimaryButton(
+                    onPress: () {
+                      if (_formKey.currentState.validate()) {
+                        _login();
+                      } else {
+                        setState(() {
+                          _autovalidate = true;
+                        });
+                      }
+                    },
+                    text: "Login",
+                  ),
+                )
         ],
       ),
     );
+  }
+
+  void _login() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    var res = await AuthService()
+        .authData(_emailController.text, _passwordController.text);
+
+    if (res.containsKey("access_token")) {
+      print('granted');
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString("token", res["access_token"]);
+      Navigator.pushReplacementNamed(
+        context,
+        BaseScreen.routeName,
+      );
+    } else {
+      _showMsg("Wrong email or password!");
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   String _validateEmail(String value) {

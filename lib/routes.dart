@@ -6,10 +6,14 @@ import 'package:sensor_app/screens/device/device_detail/device_detail_screen.dar
 import 'package:sensor_app/screens/device/device_location.dart';
 import 'package:sensor_app/screens/sender/widgets/sender_pick_location.dart';
 import 'package:sensor_app/screens/sensor/sensor_add_screen.dart';
+import 'package:sensor_app/screens/splash_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   var builder;
   switch (settings.name) {
+    case SplashScreen.routeName:
+      builder = (_) => SplashScreen();
+      break;
     case LoginScreen.routeName:
       builder = (_) => LoginScreen();
       break;
