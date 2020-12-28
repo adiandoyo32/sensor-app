@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sensor_app/screens/auth/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   static const String routeName = "profile_screen";
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,6 +22,36 @@ class ProfileScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => new AlertDialog(
+                  title: new Text("Log out from application?"),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    FlatButton(
+                      child: Text('Log Out'),
+                      onPressed: () {
+                        logout();
+                      },
+                    )
+                  ],
+                ),
+              );
+            },
+          )
+        ],
       ),
       body: SafeArea(
         child: Container(
@@ -53,14 +91,20 @@ class ProfileScreen extends StatelessWidget {
                 title: Text('Email'),
                 subtitle: Text("name@email.com"),
               ),
-              ListTile(
-                title: Text('Device'),
-                trailing: Text("1"),
-              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void logout() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.remove('token');
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      LoginScreen.routeName,
+      (Route<dynamic> route) => false,
     );
   }
 }

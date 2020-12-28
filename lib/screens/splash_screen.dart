@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sensor_app/base_screen.dart';
 import 'package:sensor_app/screens/auth/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String routeName = "splash_screen";
@@ -14,17 +16,18 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    startSplashScreen();
+    _checkIfLoggedIn();
   }
 
-  startSplashScreen() async {
-    var duration = const Duration(seconds: 3);
-    return Timer(duration, () {
-      Navigator.pushReplacementNamed(
-        context,
-        LoginScreen.routeName,
-      );
-    });
+  void _checkIfLoggedIn() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    await Future.delayed(Duration(seconds: 3));
+    if (token != null) {
+      Navigator.pushReplacementNamed(context, BaseScreen.routeName);
+    } else {
+      Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+    }
   }
 
   @override
