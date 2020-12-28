@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:sensor_app/providers/auth.dart';
 import 'package:sensor_app/providers/devices.dart';
-import 'package:sensor_app/providers/senders.dart';
-import 'package:sensor_app/providers/sensors.dart';
 import 'package:sensor_app/routes.dart';
 import 'package:sensor_app/screens/splash_screen.dart';
 
@@ -17,12 +16,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<Devices>(
           create: (context) => Devices(),
         ),
-        ChangeNotifierProvider<Senders>(
-          create: (context) => Senders(),
+        ChangeNotifierProvider<Auth>(
+          create: (context) => Auth(),
         ),
-        ChangeNotifierProvider<Sensors>(
-          create: (context) => Sensors(),
-        )
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

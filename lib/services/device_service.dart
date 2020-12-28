@@ -1,4 +1,5 @@
 import 'package:sensor_app/models/device_model.dart';
+import 'package:sensor_app/models/device_type_count_model.dart';
 import 'package:sensor_app/services/api_services.dart';
 
 const String _BASE_URL = "http://api.sensorku.tafexclusive.site/api";
@@ -12,6 +13,20 @@ class DeviceService {
       List<Device> devices =
           data.map((device) => Device.fromJson(device)).toList();
       return devices;
+    } catch (error) {
+      throw Exception(error.toString());
+    }
+  }
+
+  Future<List<DeviceTypeCount>> getDeviceTypeCount() async {
+    try {
+      ApiService apiService = ApiService('$_BASE_URL/users/1/devices/count');
+      Map<String, dynamic> responseJson = await apiService.getData();
+      List<dynamic> data = responseJson["data"];
+      List<DeviceTypeCount> deviceTypes = data
+          .map((deviceType) => DeviceTypeCount.fromJson(deviceType))
+          .toList();
+      return deviceTypes;
     } catch (error) {
       throw Exception(error.toString());
     }

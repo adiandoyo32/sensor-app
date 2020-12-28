@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
@@ -7,9 +8,26 @@ import 'package:sensor_app/screens/home/widgets/card_content.dart';
 import 'package:sensor_app/screens/home/widgets/device_type_card.dart';
 import 'package:sensor_app/screens/home/widgets/home_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isInit) {
+      Provider.of<Devices>(context).fetchDeviceTypeCount();
+    }
+    _isInit = false;
+  }
+
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarColor(kPrimaryLightColor);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -61,34 +79,41 @@ class HomeScreen extends StatelessWidget {
           physics: BouncingScrollPhysics(),
           padding: EdgeInsets.all(16.0),
           scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              DeviceTypeCard(
-                icon: MdiIcons.wave,
-                color: Colors.brown,
-                title: 'Turbidity',
-              ),
-              DeviceTypeCard(
-                icon: MdiIcons.thermometer,
-                color: Colors.red,
-                title: 'Temperature',
-              ),
-              DeviceTypeCard(
-                icon: MdiIcons.lightbulbOn,
-                color: Colors.yellow[800],
-                title: 'LDR',
-              ),
-              DeviceTypeCard(
-                icon: MdiIcons.waves,
-                color: Colors.blue,
-                title: 'Flow',
-              ),
-              DeviceTypeCard(
-                icon: MdiIcons.waterAlertOutline,
-                color: Colors.purple,
-                title: 'pH',
-              ),
-            ],
+          child: Consumer<Devices>(
+            builder: (context, devices, _) => Row(
+              children: [
+                DeviceTypeCard(
+                  icon: MdiIcons.wave,
+                  color: Colors.brown,
+                  title: 'Turbidity',
+                  total: devices.deviceTypes[0].total,
+                ),
+                DeviceTypeCard(
+                  icon: MdiIcons.thermometer,
+                  color: Colors.red,
+                  title: 'Temperature',
+                  total: devices.deviceTypes[1].total,
+                ),
+                DeviceTypeCard(
+                  icon: MdiIcons.lightbulbOn,
+                  color: Colors.yellow[800],
+                  title: 'LDR',
+                  total: devices.deviceTypes[2].total,
+                ),
+                DeviceTypeCard(
+                  icon: MdiIcons.waves,
+                  color: Colors.blue,
+                  title: 'Flow',
+                  total: devices.deviceTypes[3].total,
+                ),
+                DeviceTypeCard(
+                  icon: MdiIcons.waterAlertOutline,
+                  color: Colors.purple,
+                  title: 'pH',
+                  total: devices.deviceTypes[4].total,
+                ),
+              ],
+            ),
           ),
         )
       ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sensor_app/screens/sender/widgets/sender_add_form.dart';
+// import 'package:sensor_app/screens/sender/widgets/sender_add_form.dart';
 
 class DeviceAdd extends StatelessWidget {
   static const routeName = 'device_add';
@@ -14,7 +14,7 @@ class DeviceAdd extends StatelessWidget {
         backgroundColor: Colors.white,
         leading: BackButton(color: Colors.black),
       ),
-      body: SenderAddForm(),
+      // body: SenderAddForm(),
     );
   }
 }

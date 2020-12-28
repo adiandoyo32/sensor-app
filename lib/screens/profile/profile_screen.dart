@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sensor_app/providers/auth.dart';
+import 'package:sensor_app/providers/devices.dart';
 import 'package:sensor_app/screens/auth/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,10 +17,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Profile",
-          style: TextStyle(
-            color: Colors.black,
+        title: RichText(
+          text: TextSpan(
+            style: Theme.of(context).textTheme.headline6.copyWith(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w700,
+                ),
+            children: [
+              TextSpan(text: "Profile "),
+            ],
           ),
         ),
         backgroundColor: Colors.white,
@@ -82,14 +90,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
-              ListTile(
-                title: Text('Name'),
-                subtitle: Text("User"),
-              ),
+              SizedBox(height: 32.0),
+              Divider(height: 0, color: Color(0x40121212)),
               ListTile(
                 title: Text('Email'),
-                subtitle: Text("name@email.com"),
+                subtitle: Consumer<Auth>(
+                  builder: (context, auth, _) => Text('${auth.email}'),
+                ),
+              ),
+              Divider(height: 0, color: Color(0x40121212)),
+              ListTile(
+                title: Text('Device'),
+                subtitle: Consumer<Devices>(
+                  builder: (context, devices, _) =>
+                      Text('${devices.deviceCount}'),
+                ),
               ),
             ],
           ),

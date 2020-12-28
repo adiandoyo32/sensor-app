@@ -6,12 +6,13 @@ class DeviceTypeCard extends StatelessWidget {
     @required this.icon,
     @required this.color,
     @required this.title,
-    this.subtitle,
+    this.total,
   }) : super(key: key);
 
   final IconData icon;
   final Color color;
-  final String title, subtitle;
+  final String title;
+  final int total;
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +53,21 @@ class DeviceTypeCard extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 6.0),
-              Text(
-                "2 devices",
-                style: TextStyle(
-                  fontSize: 13.0,
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w400,
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    fontSize: 11.0,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: '$total ',
+                    ),
+                    TextSpan(
+                      text: total > 1 ? 'devices' : 'device',
+                    ),
+                  ],
                 ),
               ),
             ],

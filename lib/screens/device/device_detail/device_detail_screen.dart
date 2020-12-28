@@ -18,7 +18,7 @@ class DeviceDetailScreen extends StatefulWidget {
 class _DeviceDetailScreenState extends State<DeviceDetailScreen>
     with SingleTickerProviderStateMixin {
   TabController _controller;
-  int _selectedIndex = 0;
+  int selectedIndex = 0;
   bool _isInit = true;
 
   List<Widget> list = [
@@ -43,7 +43,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen>
 
     _controller.addListener(() {
       setState(() {
-        _selectedIndex = _controller.index;
+        selectedIndex = _controller.index;
       });
     });
   }

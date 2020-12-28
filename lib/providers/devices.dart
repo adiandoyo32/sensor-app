@@ -2,18 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:sensor_app/models/device_model.dart';
 import 'package:sensor_app/models/device_log_model.dart';
+import 'package:sensor_app/models/device_type_count_model.dart';
 import 'package:sensor_app/services/device_service.dart';
 
 class Devices with ChangeNotifier {
   DeviceService deviceService = DeviceService();
 
   List<Device> _devices = [];
+  List<DeviceLog> _logs = [];
+  List<DeviceTypeCount> _deviceTypes = [];
   String _deviceCurrentLog = "";
-  List<DeviceLog> _logs = [
-    // new SalesData(new DateTime(2017, 9, 19, 0, 03, 01), 1),
-    // new SalesData(new DateTime(2017, 9, 19, 0, 03, 05), 4),
-    // new SalesData(new DateTime(2017, 9, 19, 0, 03, 10), 5),
-  ];
 
   List<Device> get devices {
     return [..._devices];
@@ -21,6 +19,10 @@ class Devices with ChangeNotifier {
 
   List<DeviceLog> get logs {
     return [..._logs];
+  }
+
+  List<DeviceTypeCount> get deviceTypes {
+    return [..._deviceTypes];
   }
 
   int get deviceCount {
@@ -68,9 +70,20 @@ class Devices with ChangeNotifier {
     try {
       List<Device> fetchedDevices = await deviceService.getDevices();
       _devices = fetchedDevices;
+      print(_devices);
       notifyListeners();
     } catch (error) {
-      // _setFailure(error);
+      throw Exception(error.toString());
+    }
+  }
+
+  Future<void> fetchDeviceTypeCount() async {
+    try {
+      List<DeviceTypeCount> fetchedDeviceTypes =
+          await deviceService.getDeviceTypeCount();
+      _deviceTypes = fetchedDeviceTypes;
+      notifyListeners();
+    } catch (error) {
       throw Exception(error.toString());
     }
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sensor_app/base_screen.dart';
 import 'package:sensor_app/constants/colors.dart';
+import 'package:sensor_app/providers/auth.dart';
 import 'package:sensor_app/screens/widgets/buttons/primary_button.dart';
 import 'package:sensor_app/services/auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -130,9 +132,9 @@ class _LoginFormState extends State<LoginForm> {
         .authData(_emailController.text, _passwordController.text);
 
     if (res.containsKey("access_token")) {
-      print('granted');
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString("token", res["access_token"]);
+      Provider.of<Auth>(context, listen: false).setEmail(_emailController.text);
       Navigator.pushReplacementNamed(
         context,
         BaseScreen.routeName,

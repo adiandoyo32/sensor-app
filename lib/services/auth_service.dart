@@ -36,8 +36,6 @@ class AuthService {
       },
     );
     return jsonDecode(loginResponse.body);
-    // return await http.post(uri,
-    //     body: jsonEncode(data), headers: _setHeaders());
   }
 
   getData(apiUrl) async {
