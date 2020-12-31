@@ -14,14 +14,21 @@ class DeviceService {
 
   Future<List<Device>> getDevices() async {
     String id = await getUserId();
+    String uri;
 
     try {
-      ApiService apiService = ApiService('$_BASE_URL/users/$id/devices');
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      String role = localStorage.getString('role');
+      if (role != 'admin') {
+        uri = '$_BASE_URL/users/$id/devices';
+      } else {
+        uri = '$_BASE_URL/devices';
+      }
+      ApiService apiService = ApiService(uri);
       Map<String, dynamic> responseJson = await apiService.getData();
       List<dynamic> data = responseJson["data"];
       List<Device> devices =
           data.map((device) => Device.fromJson(device)).toList();
-      print(devices);
       return devices;
     } catch (error) {
       throw Exception(error.toString());
@@ -30,8 +37,18 @@ class DeviceService {
 
   Future<List<DeviceTypeCount>> getDeviceTypeCount() async {
     String id = await getUserId();
+    String uri;
+
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    String role = localStorage.getString('role');
+    if (role != 'admin') {
+      uri = '$_BASE_URL/users/$id/devices/count';
+    } else {
+      uri = '$_BASE_URL/devices/count-type';
+    }
+
     try {
-      ApiService apiService = ApiService('$_BASE_URL/users/$id/devices/count');
+      ApiService apiService = ApiService(uri);
       Map<String, dynamic> responseJson = await apiService.getData();
       List<dynamic> data = responseJson["data"];
       List<DeviceTypeCount> deviceTypes = data

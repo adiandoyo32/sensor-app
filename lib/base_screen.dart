@@ -1,22 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:sensor_app/constants/colors.dart';
+import 'package:sensor_app/screens/device/device_overview_screen.dart';
 import 'package:sensor_app/screens/home/home_screen.dart';
 import 'package:sensor_app/screens/device/device_screen.dart';
 import 'package:sensor_app/screens/profile/profile_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   static const String routeName = "base_screen";
+  final role;
+
+  BaseScreen(this.role);
+
   @override
   _BaseScreen createState() => _BaseScreen();
 }
 
 class _BaseScreen extends State<BaseScreen> {
   int _selectedIndex = 0;
-  final List<Widget> _screen = [
-    HomeScreen(),
-    DeviceScreen(),
-    ProfileScreen(),
-  ];
+
+  List<Widget> _screen = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.role == 'admin') {
+      print('admin');
+      setState(() {
+        _screen = [
+          HomeScreen(),
+          DeviceOverviewScreen(),
+          ProfileScreen(),
+        ];
+      });
+    } else {
+      print('user');
+      _screen = [
+        HomeScreen(),
+        DeviceScreen(),
+        ProfileScreen(),
+      ];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -30,36 +31,50 @@ class _HomeScreenState extends State<HomeScreen> {
     _isInit = false;
   }
 
+  Future<void> _refreshDevices(BuildContext context) async {
+    await Provider.of<Devices>(context, listen: false).fetchDevices();
+    await Provider.of<Devices>(context, listen: false).fetchDeviceTypeCount();
+  }
+
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(kPrimaryLightColor);
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 200.0,
-                decoration: BoxDecoration(
-                  color: kPrimaryColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(24.0),
-                    bottomRight: Radius.circular(24.0),
-                  ),
+        child: LayoutBuilder(
+          builder: (context, constraints) => RefreshIndicator(
+            onRefresh: () => _refreshDevices(context),
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Stack(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 200.0,
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(24.0),
+                          bottomRight: Radius.circular(24.0),
+                        ),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHomeHeader(),
+                        SizedBox(height: 56.0),
+                        _buildHomeCard(),
+                        SizedBox(height: 24.0),
+                        _buildDeviceType()
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHomeHeader(),
-                  SizedBox(height: 56.0),
-                  _buildHomeCard(),
-                  SizedBox(height: 24.0),
-                  _buildDeviceType()
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),

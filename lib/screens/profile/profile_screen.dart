@@ -108,10 +108,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: 32.0),
               Divider(height: 0, color: Color(0x40121212)),
               ListTile(
-                title: Text('id'),
-                subtitle: id != null ? Text(id) : Text(''),
-              ),
-              ListTile(
                 title: Text('Username'),
                 subtitle: username != null ? Text(username) : Text(''),
               ),

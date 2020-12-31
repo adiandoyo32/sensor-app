@@ -22,9 +22,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void _checkIfLoggedIn() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
+    var role = localStorage.getString('role');
     await Future.delayed(Duration(seconds: 3));
     if (token != null) {
-      Navigator.pushReplacementNamed(context, BaseScreen.routeName);
+      Navigator.pushReplacementNamed(context, BaseScreen.routeName,
+          arguments: role);
     } else {
       Navigator.pushReplacementNamed(context, LoginScreen.routeName);
     }

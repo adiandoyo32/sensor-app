@@ -16,7 +16,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       builder = (_) => LoginScreen();
       break;
     case BaseScreen.routeName:
-      builder = (_) => BaseScreen();
+      var role = settings.arguments;
+      builder = (_) => BaseScreen(role);
       break;
     case DeviceDetailScreen.routeName:
       var deviceId = settings.arguments;
@@ -30,7 +31,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       builder = (_) => DeviceAdd();
       break;
     default:
-      builder = (_) => BaseScreen();
+      builder = (_) => LoginScreen();
   }
   return MaterialPageRoute(builder: builder);
 }

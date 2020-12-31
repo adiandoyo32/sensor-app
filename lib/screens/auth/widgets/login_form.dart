@@ -137,10 +137,8 @@ class _LoginFormState extends State<LoginForm> {
       localStorage.setString("userId", userData['id'].toString());
       localStorage.setString("username", userData['name']);
       localStorage.setString("role", userData['roles'][0]['name']);
-      Navigator.pushReplacementNamed(
-        context,
-        BaseScreen.routeName,
-      );
+      Navigator.pushReplacementNamed(context, BaseScreen.routeName,
+          arguments: userData['roles'][0]['name']);
     } else {
       _showMsg("Wrong email or password!");
     }
