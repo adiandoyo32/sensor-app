@@ -15,12 +15,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _isInit = true;
+  bool _isLoading = true;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isInit) {
-      Provider.of<Devices>(context).fetchDeviceTypeCount();
+      Provider.of<Devices>(context).fetchDeviceTypeCount().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     }
     _isInit = false;
   }
@@ -75,47 +80,52 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          padding: EdgeInsets.all(16.0),
-          scrollDirection: Axis.horizontal,
-          child: Consumer<Devices>(
-            builder: (context, devices, _) => Row(
-              children: [
-                DeviceTypeCard(
-                  icon: MdiIcons.wave,
-                  color: Colors.brown,
-                  title: 'Turbidity',
-                  total: devices.deviceTypes[0].total,
+        _isLoading
+            ? Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            : SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(16.0),
+                scrollDirection: Axis.horizontal,
+                child: Consumer<Devices>(
+                  builder: (context, devices, _) => Row(
+                    children: [
+                      DeviceTypeCard(
+                        icon: MdiIcons.wave,
+                        color: Colors.brown,
+                        title: 'Turbidity',
+                        total: devices.deviceTypes[0].total,
+                      ),
+                      DeviceTypeCard(
+                        icon: MdiIcons.thermometer,
+                        color: Colors.red,
+                        title: 'Temperature',
+                        total: devices.deviceTypes[1].total,
+                      ),
+                      DeviceTypeCard(
+                        icon: MdiIcons.lightbulbOn,
+                        color: Colors.yellow[800],
+                        title: 'LDR',
+                        total: devices.deviceTypes[2].total,
+                      ),
+                      DeviceTypeCard(
+                        icon: MdiIcons.waves,
+                        color: Colors.blue,
+                        title: 'Flow',
+                        total: devices.deviceTypes[3].total,
+                      ),
+                      DeviceTypeCard(
+                        icon: MdiIcons.waterAlertOutline,
+                        color: Colors.purple,
+                        title: 'pH',
+                        total: devices.deviceTypes[4].total,
+                      ),
+                    ],
+                  ),
                 ),
-                DeviceTypeCard(
-                  icon: MdiIcons.thermometer,
-                  color: Colors.red,
-                  title: 'Temperature',
-                  total: devices.deviceTypes[1].total,
-                ),
-                DeviceTypeCard(
-                  icon: MdiIcons.lightbulbOn,
-                  color: Colors.yellow[800],
-                  title: 'LDR',
-                  total: devices.deviceTypes[2].total,
-                ),
-                DeviceTypeCard(
-                  icon: MdiIcons.waves,
-                  color: Colors.blue,
-                  title: 'Flow',
-                  total: devices.deviceTypes[3].total,
-                ),
-                DeviceTypeCard(
-                  icon: MdiIcons.waterAlertOutline,
-                  color: Colors.purple,
-                  title: 'pH',
-                  total: devices.deviceTypes[4].total,
-                ),
-              ],
-            ),
-          ),
-        )
+              )
       ],
     );
   }

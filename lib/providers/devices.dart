@@ -70,7 +70,6 @@ class Devices with ChangeNotifier {
     try {
       List<Device> fetchedDevices = await deviceService.getDevices();
       _devices = fetchedDevices;
-      print(_devices);
       notifyListeners();
     } catch (error) {
       throw Exception(error.toString());

@@ -12,7 +12,11 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreen extends State<BaseScreen> {
   int _selectedIndex = 0;
-  final List<Widget> _screen = [HomeScreen(), DeviceScreen(), ProfileScreen()];
+  final List<Widget> _screen = [
+    HomeScreen(),
+    DeviceScreen(),
+    ProfileScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {

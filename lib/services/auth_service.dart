@@ -6,14 +6,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 const String _URL = "http://api.sensorku.tafexclusive.site";
 
 class AuthService {
-  var token;
-
-  _getToken() async {
+  Future<String> getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    token = jsonDecode(localStorage.getString('token'))['token'];
+    String token = localStorage.getString('token');
+    return token;
   }
 
-  authData(String username, String password) async {
+  Future authData(String username, String password) async {
     var uri = _URL + '/api/get-client';
     var grantResponse = await http.get(uri);
     var grant = jsonDecode(grantResponse.body);
@@ -38,13 +37,18 @@ class AuthService {
     return jsonDecode(loginResponse.body);
   }
 
-  getData(apiUrl) async {
-    var fullUrl = _URL + apiUrl;
-    await _getToken();
-    return await http.get(fullUrl, headers: _setHeaders());
+  Future getUserData(String email) async {
+    var uri = _URL + '/api/findByEmail/$email';
+    String token = await getToken();
+    var responseJson = await http.get(
+      uri,
+      headers: setHeaders(token),
+    );
+    var response = jsonDecode(responseJson.body);
+    return response;
   }
 
-  _setHeaders() => {
+  setHeaders(String token) => {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer $token'

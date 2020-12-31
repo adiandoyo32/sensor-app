@@ -3,17 +3,25 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:sensor_app/services/failure.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   final String url;
 
   ApiService(this.url);
 
+  Future<String> getToken() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    String token = localStorage.getString('token');
+    return token;
+  }
+
   Future<dynamic> getData() async {
+    String token = await getToken();
+
     Map<String, String> headers = {
       "Content-Type": "application/json",
-      "Authorization":
-          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiODhhYTQ5ZjRmN2EwODRmMzJiZTM3NDYxNzBiOTIyNWI1MTNlMTI4ZGI1MTZkODYxNzM1MjNjNGJiZDhhOWNiZWVkODJiMWNiMWQ0YzczYjAiLCJpYXQiOjE2MDc0OTkyNjcsIm5iZiI6MTYwNzQ5OTI2NywiZXhwIjoxNjM5MDM1MjY3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.FI6g2xCRmWNZQPL2iYaxs6OzOLx5hKHXNOqhzl3C7KpCkkKYHEpmpHJPfHuwX4mGjjrUf4mv27unE3-d27kWmBLcLu0450fAIz5eQVhcbjRckcF20OupZUKxNMPjJvEURrMZ7FSg8dlccovjOP20ewAD6QGMGJzUQRLo9rs-13qv57QWCYJVYycISyveb_u31dFFBPvWEdtsWs4iqnb92HMP9rA-b5TZ4A2kdx9qFdNXDNas4u7L6xyZOa0kO1t9HrpbGinT7SIhIWMtI8jn91_ESeWXyjwBamGvOKi9n5gK9cBcRH26SeKe3BGJ4tuy1sE06DtmLli9wRpI1MI5Up5ujywFEJCQBB5zArW2JTvuaiwFfkr9qZvZiQIweguIwic3amc4UYzR_sVlSvDMMb3-SK6S-ylgjluHK9VG3SUvfLizc83g102V9UJlNth2-SNDN_awEUUd_gAwef5rV9MHUEXsMtNOL3_upEAG-oJy0V_96E89zRrmlLwDU-34BTvYZ_DGVj1g1hoQ46PR0kg_oZgxPveJTIrFa8LwkYdI8Ys2DnQwgLBCXDVQ8kXsjQVs7xBOEFjJ4Sewq2Z2cUeAkFDSK20WZD07VpeOVHK0ioTynqnE4RnyVaZde2YtmEFB1a9RsZD--dz117woVU3m6GP95N1v-IzrPRWRAGs",
+      "Authorization": "Bearer $token"
     };
 
     try {
@@ -29,10 +37,11 @@ class ApiService {
   }
 
   Future<dynamic> patchData(body) async {
+    String token = await getToken();
+
     Map<String, String> headers = {
       "Content-Type": "application/json",
-      "Authorization":
-          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiODhhYTQ5ZjRmN2EwODRmMzJiZTM3NDYxNzBiOTIyNWI1MTNlMTI4ZGI1MTZkODYxNzM1MjNjNGJiZDhhOWNiZWVkODJiMWNiMWQ0YzczYjAiLCJpYXQiOjE2MDc0OTkyNjcsIm5iZiI6MTYwNzQ5OTI2NywiZXhwIjoxNjM5MDM1MjY3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.FI6g2xCRmWNZQPL2iYaxs6OzOLx5hKHXNOqhzl3C7KpCkkKYHEpmpHJPfHuwX4mGjjrUf4mv27unE3-d27kWmBLcLu0450fAIz5eQVhcbjRckcF20OupZUKxNMPjJvEURrMZ7FSg8dlccovjOP20ewAD6QGMGJzUQRLo9rs-13qv57QWCYJVYycISyveb_u31dFFBPvWEdtsWs4iqnb92HMP9rA-b5TZ4A2kdx9qFdNXDNas4u7L6xyZOa0kO1t9HrpbGinT7SIhIWMtI8jn91_ESeWXyjwBamGvOKi9n5gK9cBcRH26SeKe3BGJ4tuy1sE06DtmLli9wRpI1MI5Up5ujywFEJCQBB5zArW2JTvuaiwFfkr9qZvZiQIweguIwic3amc4UYzR_sVlSvDMMb3-SK6S-ylgjluHK9VG3SUvfLizc83g102V9UJlNth2-SNDN_awEUUd_gAwef5rV9MHUEXsMtNOL3_upEAG-oJy0V_96E89zRrmlLwDU-34BTvYZ_DGVj1g1hoQ46PR0kg_oZgxPveJTIrFa8LwkYdI8Ys2DnQwgLBCXDVQ8kXsjQVs7xBOEFjJ4Sewq2Z2cUeAkFDSK20WZD07VpeOVHK0ioTynqnE4RnyVaZde2YtmEFB1a9RsZD--dz117woVU3m6GP95N1v-IzrPRWRAGs",
+      "Authorization": "Bearer $token",
     };
 
     try {

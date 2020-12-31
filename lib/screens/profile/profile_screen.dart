@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sensor_app/providers/auth.dart';
 import 'package:sensor_app/providers/devices.dart';
 import 'package:sensor_app/screens/auth/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +12,22 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  SharedPreferences sharedPreferences;
+  String id, username, email;
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      sharedPreferences = sp;
+      setState(() {
+        id = sharedPreferences.getString('userId');
+        username = sharedPreferences.getString('username');
+        email = sharedPreferences.getString('email');
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,10 +108,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: 32.0),
               Divider(height: 0, color: Color(0x40121212)),
               ListTile(
+                title: Text('id'),
+                subtitle: id != null ? Text(id) : Text(''),
+              ),
+              ListTile(
+                title: Text('Username'),
+                subtitle: username != null ? Text(username) : Text(''),
+              ),
+              Divider(height: 0, color: Color(0x40121212)),
+              ListTile(
                 title: Text('Email'),
-                subtitle: Consumer<Auth>(
-                  builder: (context, auth, _) => Text('${auth.email}'),
-                ),
+                subtitle: email != null ? Text(email) : Text(''),
               ),
               Divider(height: 0, color: Color(0x40121212)),
               ListTile(
