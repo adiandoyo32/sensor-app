@@ -24,7 +24,6 @@ class _BaseScreen extends State<BaseScreen> {
   void initState() {
     super.initState();
     if (widget.role == 'admin') {
-      print('admin');
       setState(() {
         _screen = [
           HomeScreen(),
@@ -33,7 +32,6 @@ class _BaseScreen extends State<BaseScreen> {
         ];
       });
     } else {
-      print('user');
       _screen = [
         HomeScreen(),
         DeviceScreen(),

@@ -17,7 +17,7 @@ class DeviceTypeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 140,
+      width: 160,
       height: 80,
       margin: EdgeInsets.only(right: 8.0),
       decoration: BoxDecoration(
@@ -40,7 +40,7 @@ class DeviceTypeCard extends StatelessWidget {
             color: color,
             size: 24.0,
           ),
-          SizedBox(width: 16.0),
+          SizedBox(width: 12.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +65,7 @@ class DeviceTypeCard extends StatelessWidget {
                       text: '$total ',
                     ),
                     TextSpan(
-                      text: total > 1 ? 'devices' : 'device',
+                      text: total > 1 ? 'devicesss' : 'device',
                     ),
                   ],
                 ),

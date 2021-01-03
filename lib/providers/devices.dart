@@ -9,12 +9,17 @@ class Devices with ChangeNotifier {
   DeviceService deviceService = DeviceService();
 
   List<Device> _devices = [];
+  List<Device> _filteredDevices = [];
   List<DeviceLog> _logs = [];
   List<DeviceTypeCount> _deviceTypes = [];
   String _deviceCurrentLog = "";
 
   List<Device> get devices {
     return [..._devices];
+  }
+
+  List<Device> get filteredDevices {
+    return [..._filteredDevices];
   }
 
   List<DeviceLog> get logs {
@@ -27,6 +32,10 @@ class Devices with ChangeNotifier {
 
   int get deviceCount {
     return _devices.length;
+  }
+
+  int get filteredDeviceCount {
+    return _filteredDevices.length;
   }
 
   int get activeDeviceCount {
@@ -66,10 +75,38 @@ class Devices with ChangeNotifier {
     return device.id;
   }
 
+  void filterDevice(Map<String, dynamic> option) {
+    if (option['status'] == 'All' && option['type'] == 'All') {
+      _filteredDevices = _devices;
+      notifyListeners();
+    } else {
+      if (option['status'] != 'All' && option['type'] == 'All') {
+        _filteredDevices = _devices
+            .where((device) => device.deviceStatus == option['status'])
+            .toList();
+        notifyListeners();
+      } else if (option['status'] == 'All' && option['type'] != 'All') {
+        _filteredDevices = _devices
+            .where((device) =>
+                device.deviceType.name == option['type'].toLowerCase())
+            .toList();
+        notifyListeners();
+      } else {
+        _filteredDevices = _devices
+            .where((device) => device.deviceStatus == option['status'])
+            .where((device) =>
+                device.deviceType.name == option['type'].toLowerCase())
+            .toList();
+        notifyListeners();
+      }
+    }
+  }
+
   Future<void> fetchDevices() async {
     try {
       List<Device> fetchedDevices = await deviceService.getDevices();
       _devices = fetchedDevices;
+      _filteredDevices = fetchedDevices;
       notifyListeners();
     } catch (error) {
       throw Exception(error.toString());

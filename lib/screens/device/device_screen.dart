@@ -6,6 +6,8 @@ import 'package:sensor_app/screens/device/device_list.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:sensor_app/services/device_service.dart';
 
+import 'device_filter.dart';
+
 class DeviceScreen extends StatefulWidget {
   static const String routeName = "device_screen";
   @override
@@ -16,6 +18,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
   bool _isInit = true;
   bool _isLoading = false;
   String qrResult = '';
+  bool _isFiltered = false;
+  Map<String, dynamic> selectedFilter = {
+    "status": "All",
+    "type": "All",
+  };
   var response;
 
   @override
@@ -33,7 +40,46 @@ class _DeviceScreenState extends State<DeviceScreen> {
   }
 
   Future<void> _refreshDevices(BuildContext context) async {
+    setState(() {
+      _isFiltered = false;
+    });
     await Provider.of<Devices>(context, listen: false).fetchDevices();
+  }
+
+  void filterDevice() {
+    setState(() {
+      _isFiltered = true;
+    });
+    Provider.of<Devices>(context, listen: false).filterDevice(selectedFilter);
+  }
+
+  _showFilterDialog() {
+    showDialog<Null>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Filter Device"),
+          content: DeviceFilter(selectedFilter, onSelected: (selected) {
+            setState(() {
+              selectedFilter = selected;
+            });
+          }),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Cancel"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            FlatButton(
+              child: Text("Apply"),
+              onPressed: () {
+                filterDevice();
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -45,9 +91,10 @@ class _DeviceScreenState extends State<DeviceScreen> {
         child: Column(
           children: [
             Padding(
-              padding:
-                  EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 10),
+              padding: EdgeInsets.only(left: 16, bottom: 8.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Consumer<Devices>(
                     builder: (context, devices, _) => RichText(
@@ -62,13 +109,30 @@ class _DeviceScreenState extends State<DeviceScreen> {
                             ),
                           ),
                           TextSpan(
-                            text:
-                                devices.deviceCount > 1 ? 'devices' : 'device',
+                            text: devices.deviceCount > 1
+                                ? 'devices '
+                                : 'device ',
                             style: TextStyle(fontSize: 14),
                           ),
+                          _isFiltered
+                              ? TextSpan(
+                                  text: '(Filtered)',
+                                  style: TextStyle(fontSize: 14),
+                                )
+                              : TextSpan()
                         ],
                       ),
                     ),
+                  ),
+                  InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 16.0),
+                      child: Text('Filter'),
+                    ),
+                    onTap: () {
+                      _showFilterDialog();
+                    },
                   ),
                 ],
               ),

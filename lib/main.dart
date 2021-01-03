@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Sensorku',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -32,9 +32,9 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate
         ],
-        supportedLocales: [
-          const Locale('en', 'US'),
-        ],
+        // supportedLocales: [
+        //   const Locale('en', 'US'),
+        // ],
         initialRoute: SplashScreen.routeName,
         onGenerateRoute: generateRoute,
       ),

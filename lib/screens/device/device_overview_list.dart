@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/providers/devices.dart';
-import 'package:sensor_app/screens/widgets/listtile/reuseable_list_tile.dart';
+import 'package:sensor_app/screens/widgets/listtile/reuseable_overview_list_tile.dart';
 
-class DeviceList extends StatelessWidget {
+class DeviceOverviewList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final devicesData = Provider.of<Devices>(context);
@@ -18,7 +18,7 @@ class DeviceList extends StatelessWidget {
       itemCount: devices.length,
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
         value: devices[index],
-        child: ReusableListTile(),
+        child: ReusableOverviewListTile(),
       ),
     );
   }
