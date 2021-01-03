@@ -1,4 +1,6 @@
-class DeviceTypeCount {
+import 'package:flutter/foundation.dart';
+
+class DeviceTypeCount with ChangeNotifier {
   final String code, name;
   final int total;
 

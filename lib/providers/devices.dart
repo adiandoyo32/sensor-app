@@ -117,11 +117,19 @@ class Devices with ChangeNotifier {
     try {
       List<DeviceTypeCount> fetchedDeviceTypes =
           await deviceService.getDeviceTypeCount();
-      _deviceTypes = fetchedDeviceTypes;
+      _deviceTypes = orderDeviceTypeByAsc(fetchedDeviceTypes);
       notifyListeners();
     } catch (error) {
       throw Exception(error.toString());
     }
+  }
+
+  List<DeviceTypeCount> orderDeviceTypeByAsc(
+      List<DeviceTypeCount> listDeviceType) {
+    Comparator<DeviceTypeCount> totalComparator =
+        (a, b) => b.total.compareTo(a.total);
+    listDeviceType.sort(totalComparator);
+    return listDeviceType;
   }
 
   Future<void> deleteDevice(int id) async {

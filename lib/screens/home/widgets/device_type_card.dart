@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:sensor_app/models/device_type_count_model.dart';
+import 'package:sensor_app/utils/helper/deviceType.dart';
 
 class DeviceTypeCard extends StatelessWidget {
-  const DeviceTypeCard({
-    Key key,
-    @required this.icon,
-    @required this.color,
-    @required this.title,
-    this.total,
-  }) : super(key: key);
-
-  final IconData icon;
-  final Color color;
-  final String title;
-  final int total;
+  final DeviceTypeModel deviceTypeModel = DeviceTypeModel();
 
   @override
   Widget build(BuildContext context) {
+    final deviceType = Provider.of<DeviceTypeCount>(context, listen: false);
     return Container(
-      width: 160,
-      height: 80,
-      margin: EdgeInsets.only(right: 8.0),
+      width: 155,
+      margin: EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -33,20 +26,20 @@ class DeviceTypeCard extends StatelessWidget {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            color: color,
-            size: 24.0,
-          ),
+          SizedBox(width: 24.0),
+          deviceTypeModel.getIcon(deviceType.name),
           SizedBox(width: 12.0),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                title,
+                deviceType.name == 'ph'
+                    ? 'pH'
+                    : deviceType.name == 'ldr'
+                        ? 'LDR'
+                        : toBeginningOfSentenceCase(deviceType.name),
                 style: TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w600,
@@ -61,12 +54,8 @@ class DeviceTypeCard extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                   children: [
-                    TextSpan(
-                      text: '$total ',
-                    ),
-                    TextSpan(
-                      text: total > 1 ? 'devicesss' : 'device',
-                    ),
+                    TextSpan(text: '${deviceType.total} '),
+                    TextSpan(text: deviceType.total > 1 ? 'devices' : 'device'),
                   ],
                 ),
               ),

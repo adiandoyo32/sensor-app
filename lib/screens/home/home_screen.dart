@@ -4,6 +4,7 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
+import 'package:sensor_app/models/device_type_count_model.dart';
 import 'package:sensor_app/providers/devices.dart';
 import 'package:sensor_app/screens/home/widgets/card_content.dart';
 import 'package:sensor_app/screens/home/widgets/device_type_card.dart';
@@ -82,6 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildDeviceType() {
+    final devices = Provider.of<Devices>(context);
+    final deviceTypeCount = devices.deviceTypes;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -100,44 +103,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Center(child: CircularProgressIndicator()),
               )
-            : SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                padding: EdgeInsets.all(16.0),
-                scrollDirection: Axis.horizontal,
-                child: Consumer<Devices>(
-                  builder: (context, devices, _) => Row(
-                    children: [
-                      DeviceTypeCard(
-                        icon: MdiIcons.wave,
-                        color: Colors.brown,
-                        title: 'Turbidity',
-                        total: devices.deviceTypes[0].total,
-                      ),
-                      DeviceTypeCard(
-                        icon: MdiIcons.thermometer,
-                        color: Colors.red,
-                        title: 'Temperature',
-                        total: devices.deviceTypes[1].total,
-                      ),
-                      DeviceTypeCard(
-                        icon: MdiIcons.lightbulbOn,
-                        color: Colors.yellow[800],
-                        title: 'LDR',
-                        total: devices.deviceTypes[2].total,
-                      ),
-                      DeviceTypeCard(
-                        icon: MdiIcons.waves,
-                        color: Colors.blue,
-                        title: 'Flow',
-                        total: devices.deviceTypes[3].total,
-                      ),
-                      DeviceTypeCard(
-                        icon: MdiIcons.waterAlertOutline,
-                        color: Colors.purple,
-                        title: 'pH',
-                        total: devices.deviceTypes[4].total,
-                      ),
-                    ],
+            : Container(
+                height: 120.0,
+                child: ListView.separated(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: deviceTypeCount.length,
+                  separatorBuilder: (context, index) => Divider(
+                    height: 0,
+                    color: Color(0x40121212),
+                  ),
+                  itemBuilder: (context, index) => ChangeNotifierProvider.value(
+                    value: deviceTypeCount[index],
+                    child: DeviceTypeCard(),
                   ),
                 ),
               )
