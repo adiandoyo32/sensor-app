@@ -14,7 +14,6 @@ class _DeviceOverviewScreenState extends State<DeviceOverviewScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isInit = true;
   bool _isLoading = false;
-  bool _isFiltered = false;
   Map<String, dynamic> selectedFilter = {
     "status": "All",
     "type": "All",
@@ -35,17 +34,11 @@ class _DeviceOverviewScreenState extends State<DeviceOverviewScreen> {
   }
 
   Future<void> _refreshDevices(BuildContext context) async {
-    setState(() {
-      _isFiltered = false;
-    });
     await Provider.of<Devices>(context, listen: false).fetchDevices();
   }
 
   void filterDevice() {
-    setState(() {
-      _isFiltered = true;
-    });
-    Provider.of<Devices>(context, listen: false).filterDevice(selectedFilter);
+    Provider.of<Devices>(context, listen: false).filterDevice();
   }
 
   _showFilterDialog() {
@@ -55,9 +48,10 @@ class _DeviceOverviewScreenState extends State<DeviceOverviewScreen> {
         return AlertDialog(
           title: Text("Filter Device"),
           content: DeviceFilter(selectedFilter, onSelected: (selected) {
-            setState(() {
-              selectedFilter = selected;
-            });
+            Provider.of<Devices>(context, listen: false)
+                .setFilterStatus(selected['status']);
+            Provider.of<Devices>(context, listen: false)
+                .setFilterType(selected['type']);
           }),
           actions: <Widget>[
             FlatButton(
@@ -110,7 +104,7 @@ class _DeviceOverviewScreenState extends State<DeviceOverviewScreen> {
                                 : 'device ',
                             style: TextStyle(fontSize: 14),
                           ),
-                          _isFiltered
+                          devices.isFiltered
                               ? TextSpan(
                                   text: '(Filtered)',
                                   style: TextStyle(fontSize: 14),

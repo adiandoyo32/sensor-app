@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 class DeviceTypeCount with ChangeNotifier {
   final String code, name;
@@ -9,6 +10,12 @@ class DeviceTypeCount with ChangeNotifier {
     this.name = "",
     this.total = 0,
   });
+
+  String get typeName {
+    return name == 'ph'
+        ? 'pH'
+        : name == 'ldr' ? 'LDR' : toBeginningOfSentenceCase(name);
+  }
 
   factory DeviceTypeCount.fromJson(Map<String, dynamic> json) {
     return DeviceTypeCount(

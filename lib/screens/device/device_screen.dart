@@ -18,7 +18,6 @@ class _DeviceScreenState extends State<DeviceScreen> {
   bool _isInit = true;
   bool _isLoading = false;
   String qrResult = '';
-  bool _isFiltered = false;
   Map<String, dynamic> selectedFilter = {
     "status": "All",
     "type": "All",
@@ -40,20 +39,15 @@ class _DeviceScreenState extends State<DeviceScreen> {
   }
 
   Future<void> _refreshDevices(BuildContext context) async {
-    setState(() {
-      _isFiltered = false;
-    });
     await Provider.of<Devices>(context, listen: false).fetchDevices();
   }
 
   void filterDevice() {
-    setState(() {
-      _isFiltered = true;
-    });
-    Provider.of<Devices>(context, listen: false).filterDevice(selectedFilter);
+    Provider.of<Devices>(context, listen: false).filterDevice();
   }
 
   _showFilterDialog() {
+    print(Provider.of<Devices>(context, listen: false).filter);
     showDialog<Null>(
       context: context,
       builder: (BuildContext context) {
@@ -72,6 +66,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
             FlatButton(
               child: Text("Apply"),
               onPressed: () {
+                print(selectedFilter);
                 filterDevice();
                 Navigator.of(context).pop();
               },
@@ -114,7 +109,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                                 : 'device ',
                             style: TextStyle(fontSize: 14),
                           ),
-                          _isFiltered
+                          devices.isFiltered
                               ? TextSpan(
                                   text: '(Filtered)',
                                   style: TextStyle(fontSize: 14),

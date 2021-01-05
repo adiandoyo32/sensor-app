@@ -4,6 +4,8 @@ import 'package:sensor_app/screens/device/device_overview_screen.dart';
 import 'package:sensor_app/screens/home/home_screen.dart';
 import 'package:sensor_app/screens/device/device_screen.dart';
 import 'package:sensor_app/screens/profile/profile_screen.dart';
+import 'package:sensor_app/providers/navigation.dart';
+import 'package:provider/provider.dart';
 
 class BaseScreen extends StatefulWidget {
   static const String routeName = "base_screen";
@@ -42,18 +44,19 @@ class _BaseScreen extends State<BaseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final navigation = Provider.of<Navigation>(context);
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screen,
+      body: Consumer<Navigation>(
+        builder: (context, value, _) => IndexedStack(
+          index: navigation.currentIndex,
+          children: _screen,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
+        currentIndex: navigation.currentIndex,
         selectedItemColor: kPrimaryColor,
         onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+          navigation.currentIndex = index;
         },
         items: [
           BottomNavigationBarItem(

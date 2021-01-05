@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sensor_app/providers/devices.dart';
 
 class DeviceFilter extends StatefulWidget {
   final Map<String, dynamic> selectedFilter;
@@ -27,22 +29,21 @@ class _DeviceFilterState extends State<DeviceFilter> {
               Flexible(flex: 1, child: Text('Status')),
               Flexible(
                 flex: 2,
-                child: DropdownButton(
-                  isExpanded: true,
-                  hint: Text("Status"),
-                  value: widget.selectedFilter['status'],
-                  items: _listStatus.map((value) {
-                    return DropdownMenuItem(
-                      child: Text(value),
-                      value: value,
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      widget.selectedFilter['status'] = value;
-                      widget.onSelected(widget.selectedFilter);
-                    });
-                  },
+                child: Consumer<Devices>(
+                  builder: (context, devices, _) => DropdownButton(
+                    isExpanded: true,
+                    hint: Text("Status"),
+                    value: devices.filter['status'],
+                    items: _listStatus.map((value) {
+                      return DropdownMenuItem(
+                        child: Text(value),
+                        value: value,
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      devices.setFilterStatus(value);
+                    },
+                  ),
                 ),
               ),
             ],
@@ -53,22 +54,22 @@ class _DeviceFilterState extends State<DeviceFilter> {
               Flexible(flex: 1, child: Text('Type')),
               Flexible(
                 flex: 2,
-                child: DropdownButton(
-                  isExpanded: true,
-                  hint: Text("Device Type"),
-                  value: widget.selectedFilter['type'],
-                  items: _listType.map((value) {
-                    return DropdownMenuItem(
-                      child: Text(value),
-                      value: value,
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      widget.selectedFilter['type'] = value;
-                      widget.onSelected(widget.selectedFilter);
-                    });
-                  },
+                child: Consumer<Devices>(
+                  builder: (context, devices, _) => DropdownButton(
+                    isExpanded: true,
+                    hint: Text("Device Type"),
+                    // value: widget.selectedFilter['type'],
+                    value: devices.filter['type'],
+                    items: _listType.map((value) {
+                      return DropdownMenuItem(
+                        child: Text(value),
+                        value: value,
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      devices.setFilterType(value);
+                    },
+                  ),
                 ),
               ),
             ],

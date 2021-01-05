@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/providers/auth.dart';
 import 'package:sensor_app/providers/devices.dart';
+import 'package:sensor_app/providers/navigation.dart';
 import 'package:sensor_app/routes.dart';
 import 'package:sensor_app/screens/splash_screen.dart';
 
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<Auth>(
           create: (context) => Auth(),
+        ),
+        ChangeNotifierProvider<Navigation>(
+          create: (context) => Navigation(),
         ),
       ],
       child: MaterialApp(

@@ -13,6 +13,11 @@ class Devices with ChangeNotifier {
   List<DeviceLog> _logs = [];
   List<DeviceTypeCount> _deviceTypes = [];
   String _deviceCurrentLog = "";
+  Map<String, dynamic> _filter = {
+    "status": "All",
+    "type": "All",
+  };
+  bool _isFiltered = false;
 
   List<Device> get devices {
     return [..._devices];
@@ -40,6 +45,24 @@ class Devices with ChangeNotifier {
 
   int get activeDeviceCount {
     return _devices.where((element) => element.isActive == 1).length;
+  }
+
+  Map get filter {
+    return _filter;
+  }
+
+  bool get isFiltered {
+    return _isFiltered;
+  }
+
+  void setFilterStatus(String status) {
+    _filter['status'] = status;
+    notifyListeners();
+  }
+
+  void setFilterType(String type) {
+    _filter['type'] = type;
+    notifyListeners();
   }
 
   void setDeviceCurrentLog(String val) {
@@ -75,27 +98,29 @@ class Devices with ChangeNotifier {
     return device.id;
   }
 
-  void filterDevice(Map<String, dynamic> option) {
-    if (option['status'] == 'All' && option['type'] == 'All') {
+  void filterDevice() {
+    print(_filter);
+    _isFiltered = true;
+    if (_filter['status'] == 'All' && _filter['type'] == 'All') {
       _filteredDevices = _devices;
       notifyListeners();
     } else {
-      if (option['status'] != 'All' && option['type'] == 'All') {
+      if (_filter['status'] != 'All' && _filter['type'] == 'All') {
         _filteredDevices = _devices
-            .where((device) => device.deviceStatus == option['status'])
+            .where((device) => device.deviceStatus == _filter['status'])
             .toList();
         notifyListeners();
-      } else if (option['status'] == 'All' && option['type'] != 'All') {
+      } else if (_filter['status'] == 'All' && _filter['type'] != 'All') {
         _filteredDevices = _devices
             .where((device) =>
-                device.deviceType.name == option['type'].toLowerCase())
+                device.deviceType.name == _filter['type'].toLowerCase())
             .toList();
         notifyListeners();
       } else {
         _filteredDevices = _devices
-            .where((device) => device.deviceStatus == option['status'])
+            .where((device) => device.deviceStatus == _filter['status'])
             .where((device) =>
-                device.deviceType.name == option['type'].toLowerCase())
+                device.deviceType.name == _filter['type'].toLowerCase())
             .toList();
         notifyListeners();
       }
@@ -107,6 +132,7 @@ class Devices with ChangeNotifier {
       List<Device> fetchedDevices = await deviceService.getDevices();
       _devices = fetchedDevices;
       _filteredDevices = fetchedDevices;
+      _isFiltered = false;
       notifyListeners();
     } catch (error) {
       throw Exception(error.toString());

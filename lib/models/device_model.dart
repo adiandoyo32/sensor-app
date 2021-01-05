@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 class Device with ChangeNotifier {
   final int id, isActive;
@@ -45,6 +46,12 @@ class DeviceType {
     this.code = "",
     this.name = "",
   });
+
+  String get typeName {
+    return name == 'ph'
+        ? 'pH'
+        : name == 'ldr' ? 'LDR' : toBeginningOfSentenceCase(name);
+  }
 
   factory DeviceType.fromJson(Map<String, dynamic> json) {
     return DeviceType(

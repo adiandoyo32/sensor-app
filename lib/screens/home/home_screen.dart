@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sensor_app/constants/colors.dart';
-import 'package:sensor_app/models/device_type_count_model.dart';
 import 'package:sensor_app/providers/devices.dart';
+import 'package:sensor_app/providers/navigation.dart';
 import 'package:sensor_app/screens/home/widgets/card_content.dart';
 import 'package:sensor_app/screens/home/widgets/device_type_card.dart';
 import 'package:sensor_app/screens/home/widgets/home_card.dart';
@@ -155,28 +154,46 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHomeCard() {
+    final device = Provider.of<Devices>(context, listen: false);
+    final navigation = Provider.of<Navigation>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
           Expanded(
-            child: HomeCard(
-              cardMargin: EdgeInsets.only(right: 8.0),
-              cardChild: Consumer<Devices>(
-                builder: (context, devices, _) => CardContent(
-                  title: 'Total Devices',
-                  labelContent: '${devices.deviceCount}',
+            child: GestureDetector(
+              onTap: () {
+                navigation.currentIndex = 1;
+                device.setFilterStatus("All");
+                device.setFilterType("All");
+                device.filterDevice();
+              },
+              child: HomeCard(
+                cardMargin: EdgeInsets.only(right: 8.0),
+                cardChild: Consumer<Devices>(
+                  builder: (context, devices, _) => CardContent(
+                    title: 'Total Devices',
+                    labelContent: '${devices.deviceCount}',
+                  ),
                 ),
               ),
             ),
           ),
           Expanded(
-            child: HomeCard(
-              cardMargin: EdgeInsets.only(left: 8.0),
-              cardChild: Consumer<Devices>(
-                builder: (context, devices, _) => CardContent(
-                  title: 'Active Devices',
-                  labelContent: '${devices.activeDeviceCount}',
+            child: GestureDetector(
+              onTap: () {
+                navigation.currentIndex = 1;
+                device.setFilterStatus("Active");
+                device.setFilterType("All");
+                device.filterDevice();
+              },
+              child: HomeCard(
+                cardMargin: EdgeInsets.only(left: 8.0),
+                cardChild: Consumer<Devices>(
+                  builder: (context, devices, _) => CardContent(
+                    title: 'Active Devices',
+                    labelContent: '${devices.activeDeviceCount}',
+                  ),
                 ),
               ),
             ),
