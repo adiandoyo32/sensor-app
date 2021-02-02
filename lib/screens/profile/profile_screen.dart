@@ -99,8 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(
-                          "https://reqres.in/img/faces/7-image.jpg"),
+                      image: NetworkImage("https://via.placeholder.com/150"),
                     ),
                   ),
                 ),
@@ -118,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Divider(height: 0, color: Color(0x40121212)),
               ListTile(
-                title: Text('Device'),
+                title: Text('Total Device'),
                 subtitle: Consumer<Devices>(
                   builder: (context, devices, _) =>
                       Text('${devices.deviceCount}'),

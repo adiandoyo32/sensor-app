@@ -18,8 +18,6 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreen extends State<BaseScreen> {
-  int _selectedIndex = 0;
-
   List<Widget> _screen = [];
 
   @override
